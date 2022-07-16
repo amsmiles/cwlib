@@ -1,5 +1,6 @@
 const fetch = (...args) => import("node-fetch").then(({default: fetch}) => fetch(...args));
-export const delay = async (ms) => await setTimeout(() => {}, [ms]);
+export const delay = async (ms) => await setTimeout(() => {
+}, [ms]);
 
 const headers = {
     accept: "text/plain, */*; q=0.01",
@@ -26,7 +27,7 @@ export async function postToDiscord(hook, params) {
     var URL = `https://discord.com/api/webhooks/${hook}`;
     await fetch(URL, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {"Content-Type": "application/json"},
         body: JSON.stringify(params),
     });
 }
@@ -34,14 +35,33 @@ export async function postToDiscord(hook, params) {
 export class cwBot {
     HOOK_URL = null;
     DISCORD_TOKEN = null;
-     nonce = 0;
-     armies = new Map()
+    nonce = 0;
+    armies = new Map()
     armyState = new Map()
     armyStateClock = new Map()
+
+    constructor() {
+    }
 
     constructor(_HOOK_URL, _DISCORD_TOKEN) {
         this.HOOK_URL = _HOOK_URL;
         this.DISCORD_TOKEN = _DISCORD_TOKEN
+    }
+
+    getNonce() {
+        return this.nonce
+    }
+
+    setNonce(nonce) {
+        this.nonce = nonce
+    }
+
+    getArmies() {
+        return this.armies
+    }
+
+    getArmyState() {
+        return this.armyState
     }
 
     async getGemHunt(token, tries = 0) {
@@ -114,7 +134,6 @@ export class cwBot {
         } else if (tries > 6) return res;
         else return await this.buildMines(token, mineid, type, tries + 1);
     }
-
 
 
     setArmyState(army) {
