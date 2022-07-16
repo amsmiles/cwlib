@@ -2,6 +2,9 @@ const fetch = (...args) => import("node-fetch").then(({default: fetch}) => fetch
 export const delay = async (ms) => await setTimeout(() => {}, [ms]);
 
 let nonce = 0;
+export let armies = new Map()
+export let armyState = new Map()
+export let armyStateClock = new Map()
 
 const headers = {
     accept: "text/plain, */*; q=0.01",
@@ -93,4 +96,45 @@ export function parseRequest(data) {
     } catch {
         return undefined;
     }
+}
+
+export function setArmyState(army) {
+    console.log(armyState);
+    console.log("Getting the army", Number(army));
+    let armyStateVal = armyState.get(Number(army));
+    let armyObj = armies.get(Number(army));
+    armyObj.Lat = armyStateVal.lat;
+    armyObj.Lng = armyStateVal.lng;
+    armyObj.DesCity = armyStateVal.city;
+    armyObj.Status = 5;
+    armies.set(army, armyObj);
+    armyState.delete(army);
+    console.log(armyState);
+}
+
+export function loadArmyState(army, armyObj) {
+    console.log(`Found moving army ${army}`);
+    armyState.set(Number(army), {
+        city: Number(armyObj.DesCity),
+        lat: Number(armyObj.DesLat),
+        lng: Number(armyObj.DesLng),
+    });
+    let clock = setInterval(() => {
+        let e = new Date(armyObj.StartTime);
+        let f = ((new Date().getTime() - e.getTime()) / 1e3 / 3600) * Number(armyObj.Speed);
+        if (f > Number(armyObj.Distance)) {
+            console.log(`Your army ${army} has arrived.`);
+            armyStateClock.delete(army);
+            setArmyState(army);
+            clearInterval(clock);
+        }
+    }, 200);
+    armyStateClock.set(army, clock);
+}
+
+export function setArmies(rawResponse) {
+    rawResponse.R.ArmyList.forEach((item) => {
+        armies.set(item.ID, item);
+        if (item.DesLng) loadArmyState(item.ID, item);
+    });
 }
