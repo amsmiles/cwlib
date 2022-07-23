@@ -83,7 +83,7 @@ export class cwBot {
         return gemInfo
     }
 
-    async getGemHunt(token, tries = 0) {
+    async getGemHunt(token, gems, tries = 0) {
         this.nonce++;
         let gemHunt = await fetch(
             `https://www.citieswar.com/signalr/send?transport=serverSentEvents&connectionToken=${encodeURIComponent(
@@ -93,7 +93,7 @@ export class cwBot {
                 headers: headers,
                 referrer: "https://www.citieswar.com/main",
                 referrerPolicy: "strict-origin-when-cross-origin",
-                body: `data=%7B%22H%22%3A%22alexh%22%2C%22M%22%3A%22call%22%2C%22A%22%3A%5B34%2C${gemInfo.R.LeftGemsCount}%5D%2C%22I%22%3A${this.nonce}%7D`,
+                body: `data=%7B%22H%22%3A%22alexh%22%2C%22M%22%3A%22call%22%2C%22A%22%3A%5B34%2C${gems}%5D%2C%22I%22%3A${this.nonce}%7D`,
                 method: "POST",
                 mode: "cors",
                 credentials: "include",
