@@ -41,9 +41,6 @@ export class cwBot {
     armyStateClock = new Map()
     rss = []
 
-    constructor() {
-    }
-
     constructor(_HOOK_URL, _DISCORD_TOKEN) {
         this.HOOK_URL = _HOOK_URL;
         this.DISCORD_TOKEN = _DISCORD_TOKEN
