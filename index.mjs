@@ -39,6 +39,7 @@ export class cwBot {
     armies = new Map()
     armyState = new Map()
     armyStateClock = new Map()
+    rss = []
 
     constructor() {
     }
@@ -127,14 +128,45 @@ export class cwBot {
             .then((res) => res)
             .catch((err) => console.log(err));
         await delay(1000);
-        if (res && res?.R?.Result === 1) {
-            console.log("Mine has been built.", "Tries: ", tries);
-            console.table(res);
-            return res;
-        } else if (tries > 6) return res;
-        else return await this.buildMines(token, mineid, type, tries + 1);
+        return res
     }
 
+    async donateToBank(token, amount) {
+        let res = await fetch(
+            `https://www.citieswar.com/signalr/send?transport=serverSentEvents&connectionToken=${encodeURIComponent(
+                token
+            )}&connectionData=%5B%7B%22name%22%3A%22alexh%22%7D%5D`,
+            {
+                headers: headers,
+                "referrer": "https://www.citieswar.com/main",
+                "referrerPolicy": "strict-origin-when-cross-origin",
+                "body": `data=%7B%22H%22%3A%22alexh%22%2C%22M%22%3A%22call%22%2C%22A%22%3A%5B78%2C${amount}%5D%2C%22I%22%3A8%7D`,
+                "method": "POST",
+                "mode": "cors",
+                "credentials": "include"
+            })
+            .then(res => res.json())
+            .then(res => res);
+    }
+
+    async sellResource(token, amount, id) {
+        let res = await fetch(
+            `https://www.citieswar.com/signalr/send?transport=serverSentEvents&connectionToken=${encodeURIComponent(
+                token
+            )}&connectionData=%5B%7B%22name%22%3A%22alexh%22%7D%5D`,
+            {
+                headers: headers,
+                "referrer": "https://www.citieswar.com/main",
+                "referrerPolicy": "strict-origin-when-cross-origin",
+                "body": `data=%7B%22H%22%3A%22alexh%22%2C%22M%22%3A%22call%22%2C%22A%22%3A%5B6%2C%22${id}%26${amount}%22%5D%2C%22I%22%3A1%7D`,
+                "method": "POST",
+                "mode": "cors",
+                "credentials": "include"
+            })
+            .then((res) => res.json())
+            .then((res) => res);
+
+    }
 
     setArmyState(army) {
         console.log(this.armyState);
@@ -168,6 +200,10 @@ export class cwBot {
             }
         }, 200);
         this.armyStateClock.set(army, clock);
+    }
+
+    setResources(rawResponce) {
+        this.rss = rawResponce.R.resources
     }
 
     setArmies(rawResponse) {
