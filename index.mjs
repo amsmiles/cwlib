@@ -65,7 +65,7 @@ export class cwBot {
         return this.armyState
     }
 
-    async getGemHunt(token, tries = 0) {
+    async checkGemHunt(token) {
         this.nonce++;
         let gemInfo = await fetch(
             `https://www.citieswar.com/signalr/send?transport=serverSentEvents&connectionToken=${encodeURIComponent(
@@ -83,10 +83,11 @@ export class cwBot {
         )
             .then((res) => res.json())
             .then((res) => res);
+        return gemInfo
+    }
+
+    async getGemHunt(token, tries = 0) {
         this.nonce++;
-        if (!gemInfo?.R?.LeftGemsCount) return console.log(gemInfo);
-        console.log("Gems available: ", gemInfo.R.LeftGemsCount);
-        console.table(gemInfo);
         let gemHunt = await fetch(
             `https://www.citieswar.com/signalr/send?transport=serverSentEvents&connectionToken=${encodeURIComponent(
                 token
@@ -103,9 +104,7 @@ export class cwBot {
         )
             .then((res) => res.json())
             .then((res) => res);
-        if (gemHunt?.R?.GemsResult !== 2 && tries < 6) await this.getGemHunt(token, tries + 1);
-        console.log("Gem hunt result");
-        console.table(gemHunt);
+        return gemHunt
     }
 
     async buildMines(token, mineid, type, tries = 0) {
@@ -127,7 +126,6 @@ export class cwBot {
             .then((res) => res.json())
             .then((res) => res)
             .catch((err) => console.log(err));
-        await delay(1000);
         return res
     }
 
