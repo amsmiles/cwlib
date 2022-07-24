@@ -18,47 +18,56 @@ export const units = {
     M41: {
         "Steel": 300,
         "Rare": 110,
-        "Gold": 190
+        "Gold": 190,
+        "Id": 10
     },
     T90: {
         "Steel": 390,
         "Rare": 120,
-        "Gold": 180
+        "Gold": 180,
+        "Id": 11
     },
     Merkava: {
         "Steel": 395,
         "Rare": 120,
-        "Gold": 200
+        "Gold": 200,
+        "Id": 12
     },
     Challenger: {
         "Steel": 480,
         "Rare": 130,
-        "Gold": 260
+        "Gold": 260,
+        "Id": 13
     },
     Abrams: {
         "Steel": 500,
         "Rare": 130,
-        "Gold": 270
+        "Gold": 270,
+        "Id": 14
     },
     BM21: {
         "Steel": 180,
         "Rare": 135,
-        "Gold": 150
+        "Gold": 150,
+        "Id": 8
     },
     M109: {
         "Steel": 260,
         "Rare": 110,
-        "Gold": 180
+        "Gold": 180,
+        "Id": 9
     },
     M240: {
         "Steel": 35,
         "Rare": 0,
-        "Gold": 15
+        "Gold": 15,
+        "Id": 3
     },
     HK21: {
         "Steel": 22,
         "Rare": 0,
-        "Gold": 10
+        "Gold": 10,
+        "Id": 2
     }
 
 }
@@ -191,6 +200,12 @@ export class cwBot {
             })
             .then(res => res.json())
             .then(res => res);
+        if (res?.R?.leftmoney) {
+            this.money = res.R.leftmoney
+            this.rss[3] = res.R.rare
+            this.rss[1] = res.R.steel
+        }
+        return res
     }
 
     async donateToBank(token, amount) {
