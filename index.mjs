@@ -270,6 +270,10 @@ export class cwBot {
         this.money = rawResponse.R.money
     }
 
+    getMoney() {
+        return this.money
+    }
+
     setResources(rawResponce) {
         this.rss = rawResponce.R.resources
     }
