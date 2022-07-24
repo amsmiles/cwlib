@@ -88,6 +88,7 @@ export class cwBot {
     armyState = new Map()
     armyStateClock = new Map()
     rss = []
+    money = 0
 
     constructor(_HOOK_URL, _DISCORD_TOKEN) {
         this.HOOK_URL = _HOOK_URL;
@@ -263,6 +264,10 @@ export class cwBot {
             }
         }, 200);
         this.armyStateClock.set(army, clock);
+    }
+
+    setMoney(rawResponse) {
+        this.money = rawResponse.R.money
     }
 
     setResources(rawResponce) {
