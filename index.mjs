@@ -160,6 +160,7 @@ export class cwBot {
             })
             .then((res) => res.json())
             .then((res) => res);
+        return res
 
     }
 
