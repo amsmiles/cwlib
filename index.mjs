@@ -175,6 +175,24 @@ export class cwBot {
         return res
     }
 
+    async makeEq(token, id, amount) {
+        let res = await fetch(
+            `https://www.citieswar.com/signalr/send?transport=serverSentEvents&connectionToken=${encodeURIComponent(
+                token
+            )}&connectionData=%5B%7B%22name%22%3A%22alexh%22%7D%5D`,
+            {
+                headers: headers,
+                "referrer": "https://www.citieswar.com/main",
+                "referrerPolicy": "strict-origin-when-cross-origin",
+                "body": `data=%7B%22H%22%3A%22alexh%22%2C%22M%22%3A%22call%22%2C%22A%22%3A%5B9%2C%22${id}%26${amount}%22%5D%2C%22I%22%3A4%7D`,
+                "method": "POST",
+                "mode": "cors",
+                "credentials": "include"
+            })
+            .then(res => res.json())
+            .then(res => res);
+    }
+
     async donateToBank(token, amount) {
         let res = await fetch(
             `https://www.citieswar.com/signalr/send?transport=serverSentEvents&connectionToken=${encodeURIComponent(
@@ -228,6 +246,10 @@ export class cwBot {
             })
             .then((res) => res.json())
             .then((res) => res);
+        if (res?.R?.CurrentMoney) {
+            this.money = res.R.CurrentMoney
+            this.rss[id-1] = this.rss[id-1]-amount
+        }
         return res
 
     }
