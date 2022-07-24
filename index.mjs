@@ -14,6 +14,55 @@ const headers = {
     "x-requested-with": "XMLHttpRequest",
 }
 
+export const units = {
+    M41: {
+        "Steel": 300,
+        "Rare": 110,
+        "Gold": 190
+    },
+    T90: {
+        "Steel": 390,
+        "Rare": 120,
+        "Gold": 180
+    },
+    Merkava: {
+        "Steel": 395,
+        "Rare": 120,
+        "Gold": 200
+    },
+    Challenger: {
+        "Steel": 480,
+        "Rare": 130,
+        "Gold": 260
+    },
+    Abrams: {
+        "Steel": 500,
+        "Rare": 130,
+        "Gold": 270
+    },
+    BM21: {
+        "Steel": 180,
+        "Rare": 135,
+        "Gold": 150
+    },
+    M109: {
+        "Steel": 260,
+        "Rare": 110,
+        "Gold": 180
+    },
+    M240: {
+        "Steel": 35,
+        "Rare": 0,
+        "Gold": 15
+    },
+    HK21: {
+        "Steel": 22,
+        "Rare": 0,
+        "Gold": 10
+    }
+
+}
+
 export function parseRequest(data) {
     try {
         return JSON.parse(decodeURIComponent(data).split("data=")[1]);
