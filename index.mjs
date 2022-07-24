@@ -201,6 +201,10 @@ export class cwBot {
         this.rss = rawResponce.R.resources
     }
 
+    getResources(){
+        return this.rss
+    }
+
     setArmies(rawResponse) {
         rawResponse.R.ArmyList.forEach((item) => {
             this.armies.set(item.ID, item);
